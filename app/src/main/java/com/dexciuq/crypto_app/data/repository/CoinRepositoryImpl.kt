@@ -30,12 +30,16 @@ class CoinRepositoryImpl(
 
     override suspend fun loadData() {
         while (true) {
-            val topCoins = apiService.getTopCoinsInfo(limit = 50)
-            val fromSymbols = topCoins.run(coinMapper::fromNameListToString)
-            val jsonContainer = apiService.getFullPriceList(fSyms = fromSymbols)
-            val coinInfoDtoList = jsonContainer.run(coinMapper::fromJsonContainerToListCoinInfo)
-            val coinInfoEntityList = coinInfoDtoList.map(coinMapper::fromDtoToEntity)
-            coinInfoDao.insertCoinInfoEntityList(coinInfoEntityList)
+            try {
+                val topCoins = apiService.getTopCoinsInfo(limit = 50)
+                val fromSymbols = topCoins.run(coinMapper::fromNameListToString)
+                val jsonContainer = apiService.getFullPriceList(fSyms = fromSymbols)
+                val coinInfoDtoList = jsonContainer.run(coinMapper::fromJsonContainerToListCoinInfo)
+                val coinInfoEntityList = coinInfoDtoList.map(coinMapper::fromDtoToEntity)
+                coinInfoDao.insertCoinInfoEntityList(coinInfoEntityList)
+            } catch (e: Exception) {
+                TODO("Not yet implemented")
+            }
             delay(10000)
         }
     }

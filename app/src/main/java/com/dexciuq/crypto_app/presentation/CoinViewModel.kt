@@ -1,51 +1,30 @@
 package com.dexciuq.crypto_app.presentation
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import com.dexciuq.crypto_app.data.data_source.remote.ApiFactory
-import com.dexciuq.crypto_app.data.data_source.local.AppDatabase
-import com.dexciuq.crypto_app.data.model.remote.CoinInfoDto
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
-import java.util.concurrent.TimeUnit
+import androidx.lifecycle.viewModelScope
+import com.dexciuq.crypto_app.data.repository.CoinRepositoryImpl
+import com.dexciuq.crypto_app.domain.repository.CoinRepository
+import com.dexciuq.crypto_app.domain.use_case.GetCoinInfoListUseCase
+import com.dexciuq.crypto_app.domain.use_case.GetCoinInfoUseCase
+import com.dexciuq.crypto_app.domain.use_case.LoadDataUseCase
+import kotlinx.coroutines.launch
 
 class CoinViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val db = AppDatabase.getInstance(application)
-    private val compositeDisposable = CompositeDisposable()
+    private val coinRepository: CoinRepository = CoinRepositoryImpl(application)
 
-    val priceList = db.coinInfoDao().getCoinInfoEntityList()
-
-    fun getDetailInfo(fSym: String): LiveData<CoinInfoDto> {
-        return db.coinInfoDao().getCoinInfoEntity(fSym)
-    }
+    private val getCoinInfoListUseCase = GetCoinInfoListUseCase(coinRepository)
+    private val getCoinInfoUseCase = GetCoinInfoUseCase(coinRepository)
+    private val loadDataUseCase = LoadDataUseCase(coinRepository)
 
     init {
-        loadData()
+        viewModelScope.launch {
+            loadDataUseCase()
+        }
     }
 
-    private fun loadData() {
-        val disposable = ApiFactory.apiService.getTopCoinsInfo(limit = 50)
-            .map { it.names?.map { it.coinNameDto?.name }?.joinToString(",") }
-            .flatMap { ApiFactory.apiService.getFullPriceList(fSyms = it) }
-            .map { getPriceListFromRawData(it) }
-            .delaySubscription(10, TimeUnit.SECONDS)
-            .repeat()
-            .retry()
-            .subscribeOn(Schedulers.io())
-            .subscribe({
-                db.coinInfoDao().insertCoinInfoEntityList(it)
-                Log.d("TEST_OF_LOADING_DATA", "Success: $it")
-            }, {
-                Log.d("TEST_OF_LOADING_DATA", "Failure: ${it.message}")
-            })
-        compositeDisposable.add(disposable)
-    }
+    val coinInfoList = getCoinInfoListUseCase()
 
-    override fun onCleared() {
-        super.onCleared()
-        compositeDisposable.dispose()
-    }
+    fun getDetailInfo(fromSymbol: String) = getCoinInfoUseCase(fromSymbol)
 }

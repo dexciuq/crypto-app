@@ -1,4 +1,4 @@
-package com.dexciuq.crypto_app.adapters
+package com.dexciuq.crypto_app.presentation.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -6,13 +6,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.dexciuq.crypto_app.R
-import com.dexciuq.crypto_app.data.model.remote.CoinInfoDto
+import com.dexciuq.crypto_app.data.data_source.remote.ApiFactory
+import com.dexciuq.crypto_app.domain.model.CoinInfo
+import com.dexciuq.crypto_app.utils.convertTimestampToTime
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_coin_info.view.*
 
-class CoinInfoAdapter(private val context: Context) : RecyclerView.Adapter<CoinInfoAdapter.CoinInfoViewHolder>() {
+class CoinInfoAdapter(
+    private val context: Context
+) : RecyclerView.Adapter<CoinInfoAdapter.CoinInfoViewHolder>() {
 
-    var coinInfoList: List<CoinInfoDto> = listOf()
+    var coinInfoList: List<CoinInfo> = listOf()
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -36,8 +40,8 @@ class CoinInfoAdapter(private val context: Context) : RecyclerView.Adapter<CoinI
                 val lastUpdateTemplate = context.resources.getString(R.string.last_update_template)
                 tvSymbols.text = String.format(symbolsTemplate, fromSymbol, toSymbol)
                 tvPrice.text = price
-                tvLastUpdate.text = String.format(lastUpdateTemplate, getFormattedTime())
-                Picasso.get().load(getFullImageUrl()).into(ivLogoCoin)
+                tvLastUpdate.text = String.format(lastUpdateTemplate, convertTimestampToTime(lastUpdate))
+                Picasso.get().load(ApiFactory.BASE_IMAGE_URL + imageUrl).into(ivLogoCoin)
                 itemView.setOnClickListener {
                     onCoinClickListener?.onCoinClick(this)
                 }
@@ -53,6 +57,6 @@ class CoinInfoAdapter(private val context: Context) : RecyclerView.Adapter<CoinI
     }
 
     interface OnCoinClickListener {
-        fun onCoinClick(coinInfoDto: CoinInfoDto)
+        fun onCoinClick(coinInfo: CoinInfo)
     }
 }

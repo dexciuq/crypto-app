@@ -7,6 +7,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.dexciuq.crypto_app.R
+import com.dexciuq.crypto_app.data.data_source.remote.ApiFactory
+import com.dexciuq.crypto_app.utils.convertTimestampToTime
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_coin_detail.ivLogoCoin
 import kotlinx.android.synthetic.main.activity_coin_detail.tvFromSymbol
@@ -28,22 +30,22 @@ class CoinDetailActivity : AppCompatActivity() {
             finish()
             return
         }
-        val fromSymbol = intent.getStringExtra(EXTRA_FROM_SYMBOL) ?: ""
+        val fromSymbol = intent.getStringExtra(EXTRA_FROM_SYMBOL).orEmpty()
         viewModel = ViewModelProvider(this)[CoinViewModel::class.java]
         viewModel.getDetailInfo(fromSymbol).observe(this, Observer {
             tvPrice.text = it.price
             tvMinPrice.text = it.lowDay
             tvMaxPrice.text = it.highDay
             tvLastMarket.text = it.lastMarket
-            tvLastUpdate.text = it.getFormattedTime()
+            tvLastUpdate.text = convertTimestampToTime(it.lastUpdate)
             tvFromSymbol.text = it.fromSymbol
             tvToSymbol.text = it.toSymbol
-            Picasso.get().load(it.getFullImageUrl()).into(ivLogoCoin)
+            Picasso.get().load(ApiFactory.BASE_IMAGE_URL + it.imageUrl).into(ivLogoCoin)
         })
     }
 
     companion object {
-        private const val EXTRA_FROM_SYMBOL = "fSym"
+        private const val EXTRA_FROM_SYMBOL = "from_symbol"
 
         fun newIntent(context: Context, fromSymbol: String): Intent {
             val intent = Intent(context, CoinDetailActivity::class.java)
