@@ -1,11 +1,11 @@
-package com.dexciuq.crypto_app.database
+package com.dexciuq.crypto_app.data.database
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.dexciuq.crypto_app.pojo.CoinPriceInfo
+import com.dexciuq.crypto_app.data.model.CoinPriceInfo
 
 @Dao
 interface CoinPriceInfoDao {

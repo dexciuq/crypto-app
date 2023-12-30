@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.dexciuq.crypto_app.R
-import com.dexciuq.crypto_app.pojo.CoinPriceInfo
+import com.dexciuq.crypto_app.data.model.CoinPriceInfo
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_coin_info.view.*
 

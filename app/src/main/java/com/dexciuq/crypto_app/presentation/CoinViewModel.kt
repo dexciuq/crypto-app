@@ -1,13 +1,13 @@
-package com.dexciuq.crypto_app
+package com.dexciuq.crypto_app.presentation
 
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import com.dexciuq.crypto_app.api.ApiFactory
-import com.dexciuq.crypto_app.database.AppDatabase
-import com.dexciuq.crypto_app.pojo.CoinPriceInfo
-import com.dexciuq.crypto_app.pojo.CoinPriceInfoRawData
+import com.dexciuq.crypto_app.data.network.ApiFactory
+import com.dexciuq.crypto_app.data.database.AppDatabase
+import com.dexciuq.crypto_app.data.model.CoinPriceInfo
+import com.dexciuq.crypto_app.data.model.CoinPriceInfoRawData
 import com.google.gson.Gson
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers

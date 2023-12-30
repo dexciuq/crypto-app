@@ -1,11 +1,12 @@
-package com.dexciuq.crypto_app
+package com.dexciuq.crypto_app.presentation
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.dexciuq.crypto_app.R
 import com.dexciuq.crypto_app.adapters.CoinInfoAdapter
-import com.dexciuq.crypto_app.pojo.CoinPriceInfo
+import com.dexciuq.crypto_app.data.model.CoinPriceInfo
 import kotlinx.android.synthetic.main.activity_coin_prce_list.*
 
 class CoinPriceListActivity : AppCompatActivity() {

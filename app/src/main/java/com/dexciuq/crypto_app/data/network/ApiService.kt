@@ -1,7 +1,7 @@
-package com.dexciuq.crypto_app.api
+package com.dexciuq.crypto_app.data.network
 
-import com.dexciuq.crypto_app.pojo.CoinInfoListOfData
-import com.dexciuq.crypto_app.pojo.CoinPriceInfoRawData
+import com.dexciuq.crypto_app.data.model.CoinInfoListOfData
+import com.dexciuq.crypto_app.data.model.CoinPriceInfoRawData
 import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Query
