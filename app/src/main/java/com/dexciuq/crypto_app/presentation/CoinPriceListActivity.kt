@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.dexciuq.crypto_app.databinding.ActivityCoinPrceListBinding
-import com.dexciuq.crypto_app.domain.model.CoinInfo
 import com.dexciuq.crypto_app.presentation.adapters.CoinInfoAdapter
 
 class CoinPriceListActivity : AppCompatActivity() {
@@ -16,20 +15,20 @@ class CoinPriceListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        setupRecyclerView()
+        setupObservers()
+    }
 
-        adapter.onCoinClickListener = object : CoinInfoAdapter.OnCoinClickListener {
-            override fun onCoinClick(coinInfo: CoinInfo) {
-                val intent = CoinDetailActivity.newIntent(
-                    this@CoinPriceListActivity,
-                    coinInfo.fromSymbol
-                )
-                startActivity(intent)
-            }
+    private fun setupRecyclerView() {
+        adapter.onCoinClickListener = {
+            val intent = CoinDetailActivity.newIntent(this, it.fromSymbol)
+            startActivity(intent)
         }
         binding.rvCoinPriceList.adapter = adapter
+        binding.rvCoinPriceList.itemAnimator = null
+    }
 
-        viewModel.coinInfoList.observe(this) {
-            adapter.coinInfoList = it
-        }
+    private fun setupObservers() {
+        viewModel.coinInfoList.observe(this, adapter::submitList)
     }
 }

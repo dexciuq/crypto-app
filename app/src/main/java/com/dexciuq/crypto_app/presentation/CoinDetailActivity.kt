@@ -16,7 +16,10 @@ class CoinDetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        setupObservers()
+    }
 
+    private fun setupObservers() {
         if (!intent.hasExtra(EXTRA_FROM_SYMBOL)) {
             finish()
             return
