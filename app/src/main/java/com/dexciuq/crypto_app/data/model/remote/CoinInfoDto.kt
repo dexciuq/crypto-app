@@ -1,14 +1,14 @@
-package com.dexciuq.crypto_app.data.model
+package com.dexciuq.crypto_app.data.model.remote
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.dexciuq.crypto_app.data.network.ApiFactory.BASE_IMAGE_URL
+import com.dexciuq.crypto_app.data.data_source.remote.ApiFactory.BASE_IMAGE_URL
 import com.dexciuq.crypto_app.utils.convertTimestampToTime
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
 @Entity(tableName = "full_price_list")
-data class CoinPriceInfo(
+data class CoinInfoDto(
     @SerializedName("TYPE")
     @Expose
     val type: String?,
@@ -18,7 +18,7 @@ data class CoinPriceInfo(
     @PrimaryKey
     @SerializedName("FROMSYMBOL")
     @Expose
-    val fromSymbol: String,
+    val fromSymbol: String?,
     @SerializedName("TOSYMBOL")
     @Expose
     val toSymbol: String?,

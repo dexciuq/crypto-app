@@ -1,4 +1,4 @@
-package com.dexciuq.crypto_app.data.network
+package com.dexciuq.crypto_app.data.data_source.remote
 
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory

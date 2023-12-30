@@ -1,10 +1,10 @@
-package com.dexciuq.crypto_app.data.model
+package com.dexciuq.crypto_app.data.model.remote
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
-data class CoinInfoListOfData(
+data class CoinNameListDto(
     @SerializedName("Data")
     @Expose
-    val data: List<Datum>? = null
+    val names: List<CoinNameContainerDto>? = null
 )

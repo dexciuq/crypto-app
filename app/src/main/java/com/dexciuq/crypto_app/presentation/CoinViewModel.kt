@@ -4,11 +4,9 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import com.dexciuq.crypto_app.data.network.ApiFactory
-import com.dexciuq.crypto_app.data.database.AppDatabase
-import com.dexciuq.crypto_app.data.model.CoinPriceInfo
-import com.dexciuq.crypto_app.data.model.CoinPriceInfoRawData
-import com.google.gson.Gson
+import com.dexciuq.crypto_app.data.data_source.remote.ApiFactory
+import com.dexciuq.crypto_app.data.data_source.local.AppDatabase
+import com.dexciuq.crypto_app.data.model.remote.CoinInfoDto
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
@@ -18,10 +16,10 @@ class CoinViewModel(application: Application) : AndroidViewModel(application) {
     private val db = AppDatabase.getInstance(application)
     private val compositeDisposable = CompositeDisposable()
 
-    val priceList = db.coinPriceInfoDao().getPriceList()
+    val priceList = db.coinInfoDao().getCoinInfoEntityList()
 
-    fun getDetailInfo(fSym: String): LiveData<CoinPriceInfo> {
-        return db.coinPriceInfoDao().getPriceInfoAboutCoin(fSym)
+    fun getDetailInfo(fSym: String): LiveData<CoinInfoDto> {
+        return db.coinInfoDao().getCoinInfoEntity(fSym)
     }
 
     init {
@@ -30,7 +28,7 @@ class CoinViewModel(application: Application) : AndroidViewModel(application) {
 
     private fun loadData() {
         val disposable = ApiFactory.apiService.getTopCoinsInfo(limit = 50)
-            .map { it.data?.map { it.coinInfo?.name }?.joinToString(",") }
+            .map { it.names?.map { it.coinNameDto?.name }?.joinToString(",") }
             .flatMap { ApiFactory.apiService.getFullPriceList(fSyms = it) }
             .map { getPriceListFromRawData(it) }
             .delaySubscription(10, TimeUnit.SECONDS)
@@ -38,32 +36,12 @@ class CoinViewModel(application: Application) : AndroidViewModel(application) {
             .retry()
             .subscribeOn(Schedulers.io())
             .subscribe({
-                db.coinPriceInfoDao().insertPriceList(it)
+                db.coinInfoDao().insertCoinInfoEntityList(it)
                 Log.d("TEST_OF_LOADING_DATA", "Success: $it")
             }, {
                 Log.d("TEST_OF_LOADING_DATA", "Failure: ${it.message}")
             })
         compositeDisposable.add(disposable)
-    }
-
-    private fun getPriceListFromRawData(
-        coinPriceInfoRawData: CoinPriceInfoRawData
-    ): List<CoinPriceInfo> {
-        val result = ArrayList<CoinPriceInfo>()
-        val jsonObject = coinPriceInfoRawData.coinPriceInfoJsonObject ?: return result
-        val coinKeySet = jsonObject.keySet()
-        for (coinKey in coinKeySet) {
-            val currencyJson = jsonObject.getAsJsonObject(coinKey)
-            val currencyKeySet = currencyJson.keySet()
-            for (currencyKey in currencyKeySet) {
-                val priceInfo = Gson().fromJson(
-                    currencyJson.getAsJsonObject(currencyKey),
-                    CoinPriceInfo::class.java
-                )
-                result.add(priceInfo)
-            }
-        }
-        return result
     }
 
     override fun onCleared() {

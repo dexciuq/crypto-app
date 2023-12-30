@@ -1,12 +1,12 @@
-package com.dexciuq.crypto_app.data.database
+package com.dexciuq.crypto_app.data.data_source.local
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.dexciuq.crypto_app.data.model.CoinPriceInfo
+import com.dexciuq.crypto_app.data.model.local.CoinInfoEntity
 
-@Database(entities = [CoinPriceInfo::class], version = 1, exportSchema = false)
+@Database(entities = [CoinInfoEntity::class], version = 1, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
     companion object {
 
@@ -29,5 +29,5 @@ abstract class AppDatabase : RoomDatabase() {
         }
     }
 
-    abstract fun coinPriceInfoDao(): CoinPriceInfoDao
+    abstract fun coinInfoDao(): CoinInfoDao
 }
