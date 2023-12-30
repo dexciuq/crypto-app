@@ -2,8 +2,6 @@ package com.dexciuq.crypto_app.data.model.remote
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.dexciuq.crypto_app.data.data_source.remote.ApiFactory.BASE_IMAGE_URL
-import com.dexciuq.crypto_app.utils.convertTimestampToTime
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 

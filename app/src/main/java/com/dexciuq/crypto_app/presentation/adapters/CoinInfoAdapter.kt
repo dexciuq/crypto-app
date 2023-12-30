@@ -1,20 +1,14 @@
 package com.dexciuq.crypto_app.presentation.adapters
 
-import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.dexciuq.crypto_app.R
-import com.dexciuq.crypto_app.data.data_source.remote.ApiFactory
+import com.dexciuq.crypto_app.databinding.ItemCoinInfoBinding
 import com.dexciuq.crypto_app.domain.model.CoinInfo
-import com.dexciuq.crypto_app.utils.convertTimestampToTime
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.item_coin_info.view.*
 
-class CoinInfoAdapter(
-    private val context: Context
-) : RecyclerView.Adapter<CoinInfoAdapter.CoinInfoViewHolder>() {
+class CoinInfoAdapter : RecyclerView.Adapter<CoinInfoAdapter.CoinInfoViewHolder>() {
 
     var coinInfoList: List<CoinInfo> = listOf()
         set(value) {
@@ -25,35 +19,41 @@ class CoinInfoAdapter(
     var onCoinClickListener: OnCoinClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CoinInfoViewHolder {
-        val view =
-            LayoutInflater.from(parent.context).inflate(R.layout.item_coin_info, parent, false)
-        return CoinInfoViewHolder(view)
+        return CoinInfoViewHolder(
+            ItemCoinInfoBinding.inflate(
+                LayoutInflater.from(parent.context), parent, false
+            )
+        )
     }
 
     override fun getItemCount() = coinInfoList.size
 
     override fun onBindViewHolder(holder: CoinInfoViewHolder, position: Int) {
-        val coin = coinInfoList[position]
-        with(holder) {
-            with(coin) {
-                val symbolsTemplate = context.resources.getString(R.string.symbols_template)
-                val lastUpdateTemplate = context.resources.getString(R.string.last_update_template)
-                tvSymbols.text = String.format(symbolsTemplate, fromSymbol, toSymbol)
-                tvPrice.text = price
-                tvLastUpdate.text = String.format(lastUpdateTemplate, convertTimestampToTime(lastUpdate))
-                Picasso.get().load(ApiFactory.BASE_IMAGE_URL + imageUrl).into(ivLogoCoin)
-                itemView.setOnClickListener {
-                    onCoinClickListener?.onCoinClick(this)
-                }
-            }
-        }
+        val coinInfo = coinInfoList[position]
+        holder.bind(coinInfo)
     }
 
-    inner class CoinInfoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val ivLogoCoin = itemView.ivLogoCoin
-        val tvSymbols = itemView.tvSymbols
-        val tvPrice = itemView.tvPrice
-        val tvLastUpdate = itemView.tvLastUpdate
+    inner class CoinInfoViewHolder(
+        private val binding: ItemCoinInfoBinding
+    ) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(coinInfo: CoinInfo) {
+            binding.tvSymbols.text = itemView.context.resources.getString(
+                R.string.symbols_template,
+                coinInfo.fromSymbol,
+                coinInfo.toSymbol
+            )
+            binding.tvLastUpdate.text = itemView.context.resources.getString(
+                R.string.last_update_template,
+                coinInfo.lastUpdate
+            )
+            binding.tvPrice.text = coinInfo.price
+
+            Picasso.get().load(coinInfo.imageUrl).into(binding.ivLogoCoin)
+
+            binding.root.setOnClickListener {
+                onCoinClickListener?.onCoinClick(coinInfo)
+            }
+        }
     }
 
     interface OnCoinClickListener {

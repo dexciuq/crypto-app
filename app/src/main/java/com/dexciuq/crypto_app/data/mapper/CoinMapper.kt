@@ -6,6 +6,11 @@ import com.dexciuq.crypto_app.data.model.remote.CoinInfoJsonContainerDto
 import com.dexciuq.crypto_app.data.model.remote.CoinNameListDto
 import com.dexciuq.crypto_app.domain.model.CoinInfo
 import com.google.gson.Gson
+import java.sql.Timestamp
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+import java.util.TimeZone
 
 class CoinMapper {
     fun fromDtoToEntity(dto: CoinInfoDto): CoinInfoEntity = CoinInfoEntity(
@@ -16,14 +21,14 @@ class CoinMapper {
         highDay = dto.highDay.orEmpty(),
         lowDay = dto.lowDay.orEmpty(),
         lastMarket = dto.lastMarket.orEmpty(),
-        imageUrl = dto.imageUrl.orEmpty(),
+        imageUrl = BASE_IMAGE_URL + dto.imageUrl.orEmpty(),
     )
 
     fun fromEntityToDomain(entity: CoinInfoEntity): CoinInfo = CoinInfo(
         fromSymbol = entity.fromSymbol,
         toSymbol = entity.toSymbol,
         price = entity.price,
-        lastUpdate = entity.lastUpdate,
+        lastUpdate = convertTimestampToTime(entity.lastUpdate),
         highDay = entity.highDay,
         lowDay = entity.lowDay,
         lastMarket = entity.lastMarket,
@@ -54,5 +59,19 @@ class CoinMapper {
         return nameListDto.names?.map {
             it.coinNameDto?.name
         }?.joinToString(",").orEmpty()
+    }
+
+    private fun convertTimestampToTime(timestamp: Long?): String {
+        if (timestamp == null) return ""
+        val stamp = Timestamp(timestamp * 1000)
+        val date = Date(stamp.time)
+        val pattern = "HH:mm:ss"
+        val sdf = SimpleDateFormat(pattern, Locale.getDefault())
+        sdf.timeZone = TimeZone.getDefault()
+        return sdf.format(date)
+    }
+
+    companion object {
+        const val BASE_IMAGE_URL = "https://cryptocompare.com"
     }
 }
