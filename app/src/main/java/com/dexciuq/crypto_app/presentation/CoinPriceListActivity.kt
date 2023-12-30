@@ -3,12 +3,13 @@ package com.dexciuq.crypto_app.presentation
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import com.dexciuq.crypto_app.databinding.ActivityCoinPrceListBinding
+import com.dexciuq.crypto_app.R
+import com.dexciuq.crypto_app.databinding.ActivityCoinPriceListBinding
 import com.dexciuq.crypto_app.presentation.adapters.CoinInfoAdapter
 
 class CoinPriceListActivity : AppCompatActivity() {
 
-    private val binding by lazy { ActivityCoinPrceListBinding.inflate(layoutInflater) }
+    private val binding by lazy { ActivityCoinPriceListBinding.inflate(layoutInflater) }
     private val adapter by lazy { CoinInfoAdapter() }
     private val viewModel by lazy { ViewModelProvider(this)[CoinViewModel::class.java] }
 
@@ -21,11 +22,29 @@ class CoinPriceListActivity : AppCompatActivity() {
 
     private fun setupRecyclerView() {
         adapter.onCoinClickListener = {
-            val intent = CoinDetailActivity.newIntent(this, it.fromSymbol)
-            startActivity(intent)
+            if (isOnePaneMode()) {
+                launchDetailActivity(it.fromSymbol)
+            } else {
+                launchDetailFragment(it.fromSymbol)
+            }
         }
         binding.rvCoinPriceList.adapter = adapter
         binding.rvCoinPriceList.itemAnimator = null
+    }
+
+    private fun isOnePaneMode() = binding.coinDetailsContainer == null
+
+    private fun launchDetailActivity(fromSymbol: String) {
+        val intent = CoinDetailActivity.newIntent(this, fromSymbol)
+        startActivity(intent)
+    }
+
+    private fun launchDetailFragment(fromSymbol: String) {
+        supportFragmentManager.popBackStack()
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.coin_details_container, CoinDetailFragment.newInstance(fromSymbol))
+            .addToBackStack(null)
+            .commit()
     }
 
     private fun setupObservers() {
