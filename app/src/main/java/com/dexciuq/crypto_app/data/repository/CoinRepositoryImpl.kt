@@ -5,8 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
 import androidx.work.ExistingWorkPolicy
 import androidx.work.WorkManager
-import com.dexciuq.crypto_app.data.data_source.local.CoinInfoDao
-import com.dexciuq.crypto_app.data.data_source.worker.RefreshDataWorker
+import com.dexciuq.crypto_app.data.datasource.local.CoinInfoDao
+import com.dexciuq.crypto_app.data.worker.RefreshDataWorker
 import com.dexciuq.crypto_app.data.mapper.CoinMapper
 import com.dexciuq.crypto_app.domain.model.CoinInfo
 import com.dexciuq.crypto_app.domain.repository.CoinRepository

@@ -1,4 +1,4 @@
-package com.dexciuq.crypto_app.data.data_source.local
+package com.dexciuq.crypto_app.data.datasource.local
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao

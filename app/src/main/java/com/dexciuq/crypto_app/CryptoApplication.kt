@@ -2,14 +2,14 @@ package com.dexciuq.crypto_app
 
 import android.app.Application
 import androidx.work.Configuration
-import com.dexciuq.crypto_app.data.data_source.worker.RefreshDataWorkerFactory
+import com.dexciuq.crypto_app.data.worker.WorkManagerFactory
 import com.dexciuq.crypto_app.di.DaggerAppComponent
 import javax.inject.Inject
 
 class CryptoApplication : Application(), Configuration.Provider {
 
     @Inject
-    lateinit var workerFactory: RefreshDataWorkerFactory
+    lateinit var workManagerFactory: WorkManagerFactory
 
     val appComponent by lazy {
         DaggerAppComponent.factory().create(this)
@@ -17,7 +17,7 @@ class CryptoApplication : Application(), Configuration.Provider {
 
     override val workManagerConfiguration: Configuration
         get() = Configuration.Builder()
-            .setWorkerFactory(workerFactory)
+            .setWorkerFactory(workManagerFactory)
             .build()
 
     override fun onCreate() {

@@ -1,4 +1,4 @@
-package com.dexciuq.crypto_app.presentation.adapters
+package com.dexciuq.crypto_app.presentation.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

@@ -1,4 +1,4 @@
-package com.dexciuq.crypto_app.data.data_source.remote
+package com.dexciuq.crypto_app.data.datasource.remote
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

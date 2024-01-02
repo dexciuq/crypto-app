@@ -1,4 +1,4 @@
-package com.dexciuq.crypto_app.di
+package com.dexciuq.crypto_app.di.viewmodel
 
 import androidx.lifecycle.ViewModel
 import dagger.MapKey

@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.dexciuq.crypto_app.CryptoApplication
 import com.dexciuq.crypto_app.databinding.FragmentCoinDetailBinding
-import com.dexciuq.crypto_app.di.ViewModelFactory
 import com.squareup.picasso.Picasso
 import javax.inject.Inject
 

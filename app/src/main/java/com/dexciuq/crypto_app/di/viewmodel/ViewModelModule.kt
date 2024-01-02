@@ -1,4 +1,4 @@
-package com.dexciuq.crypto_app.di
+package com.dexciuq.crypto_app.di.viewmodel
 
 import androidx.lifecycle.ViewModel
 import com.dexciuq.crypto_app.presentation.CoinViewModel
@@ -7,7 +7,7 @@ import dagger.Module
 import dagger.multibindings.IntoMap
 
 @Module
-interface PresentationModule {
+interface ViewModelModule {
 
     @Binds
     @IntoMap

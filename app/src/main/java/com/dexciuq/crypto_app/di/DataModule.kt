@@ -1,10 +1,10 @@
 package com.dexciuq.crypto_app.di
 
 import android.app.Application
-import com.dexciuq.crypto_app.data.data_source.local.AppDatabase
-import com.dexciuq.crypto_app.data.data_source.local.CoinInfoDao
-import com.dexciuq.crypto_app.data.data_source.remote.ApiFactory
-import com.dexciuq.crypto_app.data.data_source.remote.ApiService
+import com.dexciuq.crypto_app.data.datasource.local.AppDatabase
+import com.dexciuq.crypto_app.data.datasource.local.CoinInfoDao
+import com.dexciuq.crypto_app.data.datasource.remote.ApiFactory
+import com.dexciuq.crypto_app.data.datasource.remote.ApiService
 import com.dexciuq.crypto_app.data.repository.CoinRepositoryImpl
 import com.dexciuq.crypto_app.domain.repository.CoinRepository
 import dagger.Binds

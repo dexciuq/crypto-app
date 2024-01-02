@@ -1,4 +1,4 @@
-package com.dexciuq.crypto_app.presentation.adapters
+package com.dexciuq.crypto_app.presentation.adapter
 
 import androidx.recyclerview.widget.DiffUtil
 import com.dexciuq.crypto_app.domain.model.CoinInfo

@@ -1,4 +1,4 @@
-package com.dexciuq.crypto_app.data.data_source.local
+package com.dexciuq.crypto_app.data.datasource.local
 
 import android.content.Context
 import androidx.room.Database

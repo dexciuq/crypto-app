@@ -6,8 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.dexciuq.crypto_app.CryptoApplication
 import com.dexciuq.crypto_app.R
 import com.dexciuq.crypto_app.databinding.ActivityCoinPriceListBinding
-import com.dexciuq.crypto_app.di.ViewModelFactory
-import com.dexciuq.crypto_app.presentation.adapters.CoinInfoAdapter
+import com.dexciuq.crypto_app.presentation.adapter.CoinInfoAdapter
 import javax.inject.Inject
 
 class CoinPriceListActivity : AppCompatActivity() {

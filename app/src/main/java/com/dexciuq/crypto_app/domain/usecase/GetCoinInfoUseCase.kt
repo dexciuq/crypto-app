@@ -1,4 +1,4 @@
-package com.dexciuq.crypto_app.domain.use_case
+package com.dexciuq.crypto_app.domain.usecase
 
 import com.dexciuq.crypto_app.domain.repository.CoinRepository
 import javax.inject.Inject

@@ -1,16 +1,18 @@
-package com.dexciuq.crypto_app.data.data_source.worker
+package com.dexciuq.crypto_app.data.worker
 
 import android.content.Context
 import androidx.work.CoroutineWorker
+import androidx.work.ListenableWorker
 import androidx.work.OneTimeWorkRequest
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkerParameters
-import com.dexciuq.crypto_app.data.data_source.local.CoinInfoDao
-import com.dexciuq.crypto_app.data.data_source.remote.ApiService
+import com.dexciuq.crypto_app.data.datasource.local.CoinInfoDao
+import com.dexciuq.crypto_app.data.datasource.remote.ApiService
 import com.dexciuq.crypto_app.data.mapper.CoinMapper
 import kotlinx.coroutines.delay
+import javax.inject.Inject
 
-class RefreshDataWorker(
+class RefreshDataWorker @Inject constructor(
     context: Context,
     workerParameters: WorkerParameters,
     private val coinInfoDao: CoinInfoDao,
@@ -40,6 +42,26 @@ class RefreshDataWorker(
         fun makeRequest(): OneTimeWorkRequest {
             return OneTimeWorkRequestBuilder<RefreshDataWorker>()
                 .build()
+        }
+    }
+
+
+    class Factory @Inject constructor(
+        private val coinInfoDao: CoinInfoDao,
+        private val apiService: ApiService,
+        private val coinMapper: CoinMapper,
+    ) : ChildWorkerFactory {
+        override fun create(
+            context: Context,
+            workerParameters: WorkerParameters
+        ): ListenableWorker {
+            return RefreshDataWorker(
+                context,
+                workerParameters,
+                coinInfoDao,
+                apiService,
+                coinMapper
+            )
         }
     }
 }

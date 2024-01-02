@@ -1,4 +1,4 @@
-package com.dexciuq.crypto_app.data.data_source.remote
+package com.dexciuq.crypto_app.data.datasource.remote
 
 import com.dexciuq.crypto_app.data.model.remote.CoinInfoJsonContainerDto
 import com.dexciuq.crypto_app.data.model.remote.CoinNameListDto
