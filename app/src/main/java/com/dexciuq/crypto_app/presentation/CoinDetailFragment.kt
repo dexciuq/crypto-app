@@ -25,7 +25,7 @@ class CoinDetailFragment : Fragment() {
     }
 
     override fun onAttach(context: Context) {
-        (context as CryptoApplication).appComponent.inject(this)
+        (context.applicationContext as CryptoApplication).appComponent.inject(this)
         super.onAttach(context)
     }
 
