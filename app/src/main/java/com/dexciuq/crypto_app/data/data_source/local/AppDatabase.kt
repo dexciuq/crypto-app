@@ -8,6 +8,8 @@ import com.dexciuq.crypto_app.data.model.local.CoinInfoEntity
 
 @Database(entities = [CoinInfoEntity::class], version = 1, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
+    abstract fun coinInfoDao(): CoinInfoDao
+
     companion object {
 
         private var db: AppDatabase? = null
@@ -28,6 +30,4 @@ abstract class AppDatabase : RoomDatabase() {
             }
         }
     }
-
-    abstract fun coinInfoDao(): CoinInfoDao
 }

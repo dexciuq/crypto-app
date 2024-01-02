@@ -1,5 +1,6 @@
 package com.dexciuq.crypto_app.presentation
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,14 +8,27 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.dexciuq.crypto_app.CryptoApplication
 import com.dexciuq.crypto_app.databinding.FragmentCoinDetailBinding
+import com.dexciuq.crypto_app.di.ViewModelFactory
 import com.squareup.picasso.Picasso
+import javax.inject.Inject
 
 class CoinDetailFragment : Fragment() {
 
     private val binding by lazy { FragmentCoinDetailBinding.inflate(layoutInflater) }
-    private val viewModel by lazy { ViewModelProvider(this)[CoinViewModel::class.java] }
     private lateinit var fromSymbol: String
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
+    private val viewModel by lazy {
+        ViewModelProvider(this, viewModelFactory)[CoinViewModel::class.java]
+    }
+
+    override fun onAttach(context: Context) {
+        (context as CryptoApplication).appComponent.inject(this)
+        super.onAttach(context)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

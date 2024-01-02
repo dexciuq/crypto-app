@@ -3,17 +3,26 @@ package com.dexciuq.crypto_app.presentation
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import com.dexciuq.crypto_app.CryptoApplication
 import com.dexciuq.crypto_app.R
 import com.dexciuq.crypto_app.databinding.ActivityCoinPriceListBinding
+import com.dexciuq.crypto_app.di.ViewModelFactory
 import com.dexciuq.crypto_app.presentation.adapters.CoinInfoAdapter
+import javax.inject.Inject
 
 class CoinPriceListActivity : AppCompatActivity() {
 
     private val binding by lazy { ActivityCoinPriceListBinding.inflate(layoutInflater) }
     private val adapter by lazy { CoinInfoAdapter() }
-    private val viewModel by lazy { ViewModelProvider(this)[CoinViewModel::class.java] }
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
+    private val viewModel by lazy {
+        ViewModelProvider(this, viewModelFactory)[CoinViewModel::class.java]
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        (application as CryptoApplication).appComponent.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         setupRecyclerView()

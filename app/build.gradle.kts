@@ -61,6 +61,10 @@ dependencies {
     // work manager
     implementation("androidx.work:work-runtime-ktx:2.9.0")
 
+    // dagger 2
+    implementation("com.google.dagger:dagger:2.48.1")
+    kapt("com.google.dagger:dagger-compiler:2.48.1")
+
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
